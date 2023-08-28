@@ -1,0 +1,42 @@
+FROM ruby:3.2.2
+
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get -y update
+
+
+# dx.snippet.start=templates/snippets/bundler/latest__bundler.dockerfile-snippet
+# Based on documentation at https://guides.rubygems.org/command-reference/#gem-update
+# based on the vendor's documentation
+RUN echo "gem: --no-document" >> ~/.gemrc && \
+    gem update --system && \
+    gem install bundler
+
+# dx.snippet.end=templates/snippets/bundler/latest__bundler.dockerfile-snippet
+
+
+# dx.snippet.start=templates/snippets/chromium/bullseye__chromium.dockerfile-snippet
+# Based on documentation at https://packages.debian.org/bullseye/chromium-driver
+# based on Debian's packaging
+RUN apt-get -y install chromium chromium-driver
+# dx.snippet.end=templates/snippets/chromium/bullseye__chromium.dockerfile-snippet
+
+
+# dx.snippet.start=templates/snippets/nodejs/20__nodejs.dockerfile-snippet
+# Based on documentation at https://github.com/nodesource/distributions#using-debian-as-root-5
+# based on the vendor's documentation
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+# dx.snippet.end=templates/snippets/nodejs/20__nodejs.dockerfile-snippet
+
+
+# dx.snippet.start=templates/snippets/rails/latest__rails.dockerfile-snippet
+# Based on documentation at https://guides.rubyonrails.org/getting_started.html#creating-a-new-rails-project-installing-rails-installing-rails
+# based on the vendor's documentation
+ENV BINDING=0.0.0.0
+RUN gem install rails
+
+# dx.snippet.end=templates/snippets/rails/latest__rails.dockerfile-snippet
+
+# This entrypoint produces a nice help message and waits around for you to do
+# something with the container.
+COPY dx/show-help-in-app-container-then-wait.sh /root
