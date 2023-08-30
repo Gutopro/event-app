@@ -1,0 +1,26 @@
+services:
+  app:
+    image: ${IMAGE}
+    platform: ${DOCKER_DEFAULT_PLATFORM}
+    pull_policy: "missing"
+    init: true
+    volumes:
+      - type: bind
+        source: "./"
+        target: "/root/work"
+        consistency: "consistent"
+    entrypoint: /root/show-help-in-app-container-then-wait.sh
+    working_dir: /root/work
+
+
+# dx.service.start=templates/services/postgres/15__postgres.docker-compose-service.yml
+# Based on documentation at https://hub.docker.com/_/postgres
+# managed by Docker
+  postgres:
+    image: postgres:15
+    pull_policy: "missing"
+    platform: ${DOCKER_DEFAULT_PLATFORM}
+    environment:
+      POSTGRES_PASSWORD: postgres
+# dx.service.end=templates/services/postgres/15__postgres.docker-compose-service.yml
+

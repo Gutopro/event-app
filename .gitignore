@@ -38,4 +38,4 @@
 # secrets we need for dev and test, so we really
 # dont want this in version control
 .env.*.local
-
+dx/docker-compose.local.env
